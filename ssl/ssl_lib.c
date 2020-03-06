@@ -1481,7 +1481,7 @@ int ssl_cipher_list_to_bytes(SSL *s, STACK_OF(SSL_CIPHER) *sk,
      * applicable SCSVs.
      */
     if (p != q) {
-        if (empty_reneg_info_scsv) {
+        /*if (empty_reneg_info_scsv) {
             static SSL_CIPHER scsv = {
                 0, NULL, SSL3_CK_SCSV, 0, 0, 0, 0, 0, 0, 0, 0, 0
             };
@@ -1498,7 +1498,7 @@ int ssl_cipher_list_to_bytes(SSL *s, STACK_OF(SSL_CIPHER) *sk,
             };
             j = put_cb(&scsv, p);
             p += j;
-        }
+        }*/
     }
 
     return (p - q);
@@ -1562,15 +1562,16 @@ STACK_OF(SSL_CIPHER) *ssl_bytes_to_cipher_list(SSL *s, unsigned char *p,
         }
 
         /* Check for TLS_FALLBACK_SCSV */
-        if ((n != 3 || !p[0]) &&
+        // see https://android.googlesource.com/platform/external/openssl/+/android-cts-5.0_r3/patches/0018-tls_fallback_scsv.patch
+        /*if ((n != 3 || !p[0]) &&
             (p[n - 2] == ((SSL3_CK_FALLBACK_SCSV >> 8) & 0xff)) &&
-            (p[n - 1] == (SSL3_CK_FALLBACK_SCSV & 0xff))) {
+            (p[n - 1] == (SSL3_CK_FALLBACK_SCSV & 0xff))) {*/
             /*
              * The SCSV indicates that the client previously tried a higher
              * version. Fail if the current version is an unexpected
              * downgrade.
              */
-            if (!SSL_ctrl(s, SSL_CTRL_CHECK_PROTO_VERSION, 0, NULL)) {
+            /*if (!SSL_ctrl(s, SSL_CTRL_CHECK_PROTO_VERSION, 0, NULL)) {
                 SSLerr(SSL_F_SSL_BYTES_TO_CIPHER_LIST,
                        SSL_R_INAPPROPRIATE_FALLBACK);
                 if (s->s3)
@@ -1580,7 +1581,7 @@ STACK_OF(SSL_CIPHER) *ssl_bytes_to_cipher_list(SSL *s, unsigned char *p,
             }
             p += n;
             continue;
-        }
+        }*/
 
         c = ssl_get_cipher_by_char(s, p);
         p += n;
