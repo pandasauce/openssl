@@ -1736,10 +1736,6 @@ while (<IN>)
 	if ($cross_compile_prefix)
 		{
 		s/^CC=.*$/CROSS_COMPILE= $cross_compile_prefix\nCC= \$\(CROSS_COMPILE\)$cc/;
-		s/^AR=\s*/AR= \$\(CROSS_COMPILE\)/;
-		s/^NM=\s*/NM= \$\(CROSS_COMPILE\)/;
-		s/^RANLIB=\s*/RANLIB= \$\(CROSS_COMPILE\)/;
-		s/^RC=\s*/RC= \$\(CROSS_COMPILE\)/;
 		s/^MAKEDEPPROG=.*$/MAKEDEPPROG= \$\(CROSS_COMPILE\)$cc/ if $cc eq "gcc";
 		}
 	else	{
